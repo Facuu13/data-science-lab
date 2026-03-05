@@ -25,7 +25,11 @@ for hour in range(24):
 
 df = pd.DataFrame(data)
 
-print(df)
+mean_consumption = df["consumption_kwh"].mean()
+std_consumption = df["consumption_kwh"].std()
+
+print("Average consumption:", round(mean_consumption, 2))
+print("Standard deviation:", round(std_consumption, 2))
 
 plt.plot(df["hour"], df["consumption_kwh"])
 plt.xlabel("Hour of day")
