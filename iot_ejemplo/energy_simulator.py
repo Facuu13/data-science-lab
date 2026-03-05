@@ -28,27 +28,40 @@ for day in range(1, 31):
 
 df = pd.DataFrame(data)
 
-# Inyectar una anomalía (pico raro) en una hora específica
-anomaly_hour = 14
-df.loc[df["hour"] == anomaly_hour, "consumption_kwh"] = 3.5
+df.loc[df["day"] == 17, "consumption_kwh"] *= 2
 
-mean_consumption = df["consumption_kwh"].mean()
-std_consumption = df["consumption_kwh"].std()
+daily_avg = df.groupby("day")["consumption_kwh"].mean()
 
-print("Average consumption:", round(mean_consumption, 2))
-print("Standard deviation:", round(std_consumption, 2))
+mean_daily = daily_avg.mean()
+std_daily = daily_avg.std()
 
-anomalies = df[abs(df["consumption_kwh"] - mean_consumption) > 2 * std_consumption]
+print("Mean daily consumption:", round(mean_daily, 2))
+print("Std daily consumption:", round(std_daily, 2))
 
-for _, row in anomalies.iterrows():
-    print(f"⚠ anomalous consumption detected at hour {int(row['hour'])}: {row['consumption_kwh']} kWh")
+anomalous_days = daily_avg[abs(daily_avg - mean_daily) > 2 * std_daily]
 
-plt.plot(df["hour"], df["consumption_kwh"], marker="o")
+print("\nAnomalous days detected:")
+print(anomalous_days)
 
-if not anomalies.empty:
-    plt.scatter(anomalies["hour"], anomalies["consumption_kwh"], marker="x", s=100)
 
-plt.xlabel("Hour of day")
+plt.plot(daily_avg.index, daily_avg.values, marker="o")
+
+plt.scatter(
+    anomalous_days.index,
+    anomalous_days.values,
+    color="red",
+    s=100
+)
+
+plt.xlabel("Day")
+plt.ylabel("Average Consumption (kWh)")
+plt.title("Average Daily Energy Consumption")
+plt.show()
+
+day17 = df[df["day"] == 17]
+
+plt.plot(day17["hour"], day17["consumption_kwh"], marker="o")
+plt.xlabel("Hour")
 plt.ylabel("Consumption (kWh)")
-plt.title("Daily Energy Consumption (with anomalies)")
+plt.title("Energy Consumption - Day 17")
 plt.show()
