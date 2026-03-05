@@ -43,6 +43,11 @@ anomalous_days = daily_avg[abs(daily_avg - mean_daily) > 2 * std_daily]
 print("\nAnomalous days detected:")
 print(anomalous_days)
 
+hourly_avg = df.groupby("hour")["consumption_kwh"].mean()
+
+peak_hour = hourly_avg.idxmax()
+peak_value = hourly_avg.max()
+print(f"\nPeak hour: {peak_hour} with {peak_value:.2f} kWh")
 
 plt.plot(daily_avg.index, daily_avg.values, marker="o")
 
@@ -58,10 +63,10 @@ plt.ylabel("Average Consumption (kWh)")
 plt.title("Average Daily Energy Consumption")
 plt.show()
 
-day17 = df[df["day"] == 17]
-
-plt.plot(day17["hour"], day17["consumption_kwh"], marker="o")
-plt.xlabel("Hour")
-plt.ylabel("Consumption (kWh)")
-plt.title("Energy Consumption - Day 17")
+plt.plot(hourly_avg.index, hourly_avg.values, marker="o")
+plt.xlabel("Hour of day")
+plt.ylabel("Average Consumption (kWh)")
+plt.title("Average Consumption Profile (by Hour)")
+plt.xticks(range(0, 24, 1))
+plt.grid(True, alpha=0.3)
 plt.show()
