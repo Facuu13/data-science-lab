@@ -25,6 +25,10 @@ for hour in range(24):
 
 df = pd.DataFrame(data)
 
+# Inyectar una anomalía (pico raro) en una hora específica
+anomaly_hour = 14
+df.loc[df["hour"] == anomaly_hour, "consumption_kwh"] = 3.5
+
 mean_consumption = df["consumption_kwh"].mean()
 std_consumption = df["consumption_kwh"].std()
 
@@ -33,14 +37,15 @@ print("Standard deviation:", round(std_consumption, 2))
 
 anomalies = df[abs(df["consumption_kwh"] - mean_consumption) > 2 * std_consumption]
 
-print("\nAnomalies detected:")
-print(anomalies)
-
 for _, row in anomalies.iterrows():
-    print(f"⚠ anomalous consumption detected at hour {row['hour']} : {row['consumption_kwh']} kWh")
+    print(f"⚠ anomalous consumption detected at hour {int(row['hour'])}: {row['consumption_kwh']} kWh")
 
-plt.plot(df["hour"], df["consumption_kwh"])
+plt.plot(df["hour"], df["consumption_kwh"], marker="o")
+
+if not anomalies.empty:
+    plt.scatter(anomalies["hour"], anomalies["consumption_kwh"], marker="x", s=100)
+
 plt.xlabel("Hour of day")
 plt.ylabel("Consumption (kWh)")
-plt.title("Daily Energy Consumption")
+plt.title("Daily Energy Consumption (with anomalies)")
 plt.show()
