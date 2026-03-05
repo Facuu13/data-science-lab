@@ -1,5 +1,6 @@
 import random
 import pandas as pd
+import matplotlib.pyplot as plt
 
 data = []
 
@@ -25,3 +26,9 @@ for hour in range(24):
 df = pd.DataFrame(data)
 
 print(df)
+
+plt.plot(df["hour"], df["consumption_kwh"])
+plt.xlabel("Hour of day")
+plt.ylabel("Consumption (kWh)")
+plt.title("Daily Energy Consumption")
+plt.show()
