@@ -4,24 +4,27 @@ import matplotlib.pyplot as plt
 
 data = []
 
-for hour in range(24):
-    
-    if hour < 6:
-        consumption = random.uniform(0.2, 0.4)
+for day in range(1, 31):
 
-    elif hour < 12:
-        consumption = random.uniform(0.4, 0.8)
+    for hour in range(24):
 
-    elif hour < 18:
-        consumption = random.uniform(0.8, 1.5)
+        if hour < 6:
+            consumption = random.uniform(0.2, 0.4)
 
-    else:
-        consumption = random.uniform(1.2, 2.5)
+        elif hour < 12:
+            consumption = random.uniform(0.4, 0.8)
 
-    data.append({
-        "hour": hour,
-        "consumption_kwh": round(consumption, 2)
-    })
+        elif hour < 18:
+            consumption = random.uniform(0.8, 1.5)
+
+        else:
+            consumption = random.uniform(1.2, 2.5)
+
+        data.append({
+            "day": day,
+            "hour": hour,
+            "consumption_kwh": round(consumption, 2)
+        })
 
 df = pd.DataFrame(data)
 
