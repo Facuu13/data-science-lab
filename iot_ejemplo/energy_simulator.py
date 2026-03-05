@@ -32,6 +32,15 @@ df = pd.DataFrame(data)
 X = df[["hour"]]
 y = df["consumption_kwh"]
 
+print("X shape:", X.shape)
+print("y shape:", y.shape)
+
+print("\nPrimeras filas de X:")
+print(X.head())
+
+print("\nPrimeras filas de y:")
+print(y.head())
+
 df.loc[df["day"] == 17, "consumption_kwh"] *= 2
 
 daily_avg = df.groupby("day")["consumption_kwh"].mean()
