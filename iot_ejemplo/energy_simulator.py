@@ -31,6 +31,14 @@ std_consumption = df["consumption_kwh"].std()
 print("Average consumption:", round(mean_consumption, 2))
 print("Standard deviation:", round(std_consumption, 2))
 
+anomalies = df[abs(df["consumption_kwh"] - mean_consumption) > 2 * std_consumption]
+
+print("\nAnomalies detected:")
+print(anomalies)
+
+for _, row in anomalies.iterrows():
+    print(f"⚠ anomalous consumption detected at hour {row['hour']} : {row['consumption_kwh']} kWh")
+
 plt.plot(df["hour"], df["consumption_kwh"])
 plt.xlabel("Hour of day")
 plt.ylabel("Consumption (kWh)")
