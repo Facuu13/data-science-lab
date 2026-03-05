@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 data = []
 
@@ -27,6 +28,9 @@ for day in range(1, 31):
         })
 
 df = pd.DataFrame(data)
+
+X = df[["hour"]]
+y = df["consumption_kwh"]
 
 df.loc[df["day"] == 17, "consumption_kwh"] *= 2
 
